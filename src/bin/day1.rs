@@ -1,12 +1,8 @@
-use std::{
-    fs::File,
-    io::{prelude::*, BufReader},
-};
+use aoc2021::get_input;
+use std::io::*;
 
 fn read_input() -> Vec<u16> {
-    let input_file = File::open("inputs/day1.txt").expect("Input file doesn't exist");
-    let buffer = BufReader::new(input_file);
-    buffer
+    get_input(1)
         .lines()
         .map(|line| {
             line.expect("could not read line")
@@ -16,13 +12,12 @@ fn read_input() -> Vec<u16> {
         .collect()
 }
 
-fn part_1() -> u16 {
-    let data = read_input();
+fn part_1(input: &Vec<u16>) -> u16 {
     let mut increases: u16 = 0;
 
-    for (index, value) in data.iter().enumerate() {
+    for (index, value) in input.iter().enumerate() {
         if index > 0 {
-            let prev_value = data[index - 1];
+            let prev_value = input[index - 1];
             if value > &prev_value {
                 increases += 1;
             }
@@ -32,14 +27,13 @@ fn part_1() -> u16 {
     increases
 }
 
-fn part_2() -> u16 {
-    let data = read_input();
+fn part_2(input: &Vec<u16>) -> u16 {
     let mut increases: u16 = 0;
 
     // far from optimal
-    for i in 0..(data.len() - 3) {
-        let window_1_sum: u16 = data[i..i+3].iter().sum();
-        let window_2_sum: u16 = data[i+1..i+4].iter().sum();
+    for i in 0..(input.len() - 3) {
+        let window_1_sum: u16 = input[i..i + 3].iter().sum();
+        let window_2_sum: u16 = input[i + 1..i + 4].iter().sum();
 
         if window_2_sum > window_1_sum {
             increases += 1
@@ -50,6 +44,7 @@ fn part_2() -> u16 {
 }
 
 fn main() {
-    println!("Part 1: {}", part_1());
-    println!("Task 2: {}", part_2());
+    let data = read_input();
+    println!("Part 1: {}", part_1(&data));
+    println!("Part 2: {}", part_2(&data));
 }

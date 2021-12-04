@@ -6,4 +6,4 @@ I don't know Rust at all though, so that might be tough.
 
 ## Running
 
-`cargo run day[n]`
+`cargo run --bin day[n]`
