@@ -6,4 +6,6 @@ I don't know Rust at all though, so that might be tough.
 
 ## Running
 
+Put the input into `inputs/day[n].txt` file, then run:
+
 `cargo run --bin day[n]`
