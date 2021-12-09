@@ -1,6 +1,5 @@
 use aoc2021::get_input;
-use std::cmp::Ordering;
-use std::io::*;
+use std::{cmp::Ordering, io::BufRead, time::Instant};
 
 type Column = Vec<char>;
 type Matrix = Vec<Column>;
@@ -130,7 +129,12 @@ fn part_2(input: &Matrix) -> u32 {
 }
 
 fn main() {
+  let now = Instant::now();
+
   let input = read_input();
   println!("Part 1: {}", part_1(&input));
   println!("Part 2: {}", part_2(&input));
+
+  let elapsed = now.elapsed();
+  println!("Elapsed: {:.2?}", elapsed);
 }

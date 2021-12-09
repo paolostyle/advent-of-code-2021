@@ -1,5 +1,5 @@
 use aoc2021::get_input;
-use std::io::*;
+use std::{io::BufRead, time::Instant};
 
 struct Instruction {
   direction: String,
@@ -61,7 +61,12 @@ fn part_2(input: &Vec<Instruction>) -> u32 {
 }
 
 fn main() {
+  let now = Instant::now();
+
   let input = read_input();
   println!("Part 1: {}", part_1(&input));
   println!("Part 2: {}", part_2(&input));
+
+  let elapsed = now.elapsed();
+  println!("Elapsed: {:.2?}", elapsed);
 }

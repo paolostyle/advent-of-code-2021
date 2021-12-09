@@ -1,5 +1,5 @@
 use aoc2021::get_input;
-use std::{collections::HashMap, io::*};
+use std::{collections::HashMap, io::BufRead, time::Instant};
 
 fn read_input() -> Vec<u8> {
   get_input(6)
@@ -14,8 +14,7 @@ fn read_input() -> Vec<u8> {
     .collect()
 }
 
-fn calc(iterations: u16) -> u64 {
-  let input = read_input();
+fn calc(input: &Vec<u8>, iterations: u16) -> u64 {
   let mut fishes_age: HashMap<u8, u64> = HashMap::new();
 
   for age in 0..9 {
@@ -44,15 +43,21 @@ fn calc(iterations: u16) -> u64 {
   fishes_age.values().sum()
 }
 
-fn part_1() -> u64 {
-  calc(80)
+fn part_1(input: &Vec<u8>) -> u64 {
+  calc(input, 80)
 }
 
-fn part_2() -> u64 {
-  calc(256)
+fn part_2(input: &Vec<u8>) -> u64 {
+  calc(input, 256)
 }
 
 fn main() {
-  println!("Part 1: {}", part_1());
-  println!("Part 2: {}", part_2());
+  let now = Instant::now();
+
+  let input = read_input();
+  println!("Part 1: {}", part_1(&input));
+  println!("Part 2: {}", part_2(&input));
+
+  let elapsed = now.elapsed();
+  println!("Elapsed: {:.2?}", elapsed);
 }

@@ -1,5 +1,5 @@
 use aoc2021::get_input;
-use std::io::*;
+use std::{io::BufRead, time::Instant};
 
 const BOARD_SIZE: usize = 5;
 
@@ -158,6 +158,11 @@ fn part_2() -> u32 {
 }
 
 fn main() {
+  let now = Instant::now();
+
   println!("Part 1: {}", part_1());
   println!("Part 2: {}", part_2());
+
+  let elapsed = now.elapsed();
+  println!("Elapsed: {:.2?}", elapsed);
 }

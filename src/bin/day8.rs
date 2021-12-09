@@ -1,7 +1,6 @@
 use aoc2021::get_input;
 use itertools::Itertools;
-use std::time::Instant;
-use std::{collections::HashMap, io::BufRead};
+use std::{collections::HashMap, io::BufRead, time::Instant};
 
 fn read_input() -> Vec<(Vec<String>, Vec<String>)> {
   get_input(8)

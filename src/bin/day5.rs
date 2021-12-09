@@ -1,6 +1,9 @@
 use aoc2021::get_input;
-use std::cmp::{max, min};
-use std::io::*;
+use std::{
+  cmp::{max, min},
+  io::BufRead,
+  time::Instant,
+};
 
 const MAP_SIZE: usize = 1000;
 type Map = [[u16; MAP_SIZE]; MAP_SIZE];
@@ -110,7 +113,12 @@ fn part_2(input: &Vec<Line>) -> usize {
 }
 
 fn main() {
+  let now = Instant::now();
+
   let input = read_input();
   println!("Part 1: {}", part_1(&input));
   println!("Part 2: {}", part_2(&input));
+
+  let elapsed = now.elapsed();
+  println!("Elapsed: {:.2?}", elapsed);
 }
