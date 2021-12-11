@@ -1,14 +1,15 @@
-use aoc2021::get_input;
-use std::{collections::HashMap, io::BufRead, time::Instant};
+use aoc2021::{get_input, run};
+use std::collections::HashMap;
 
 const OPENING_BRACES: [char; 4] = ['(', '[', '{', '<'];
 const BRACES_PAIRS: [(char, char); 4] = [(')', '('), (']', '['), ('}', '{'), ('>', '<')];
 const REV_BRACES_PAIRS: [(char, char); 4] = [('(', ')'), ('[', ']'), ('{', '}'), ('<', '>')];
 
 fn read_input() -> Vec<String> {
-  get_input(10).lines().flatten().collect()
+  get_input(10).collect()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<String>) -> u32 {
   let braces_map = HashMap::from(BRACES_PAIRS);
   let mut score = 0;
@@ -18,19 +19,17 @@ fn part_1(input: &Vec<String>) -> u32 {
     for brace in line.chars() {
       if OPENING_BRACES.contains(&brace) {
         stack.push(brace);
+      } else if braces_map.get(&brace) == stack.last() {
+        stack.pop();
       } else {
-        if braces_map.get(&brace) == stack.last() {
-          stack.pop();
-        } else {
-          score += match brace {
-            ')' => 3,
-            ']' => 57,
-            '}' => 1197,
-            '>' => 25137,
-            _ => panic!("!"),
-          };
-          break;
-        }
+        score += match brace {
+          ')' => 3,
+          ']' => 57,
+          '}' => 1197,
+          '>' => 25137,
+          _ => panic!("!"),
+        };
+        break;
       }
     }
   }
@@ -38,6 +37,7 @@ fn part_1(input: &Vec<String>) -> u32 {
   score
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<String>) -> u64 {
   let braces_map = HashMap::from(BRACES_PAIRS);
   let rev_braces_map = HashMap::from(REV_BRACES_PAIRS);
@@ -50,20 +50,18 @@ fn part_2(input: &Vec<String>) -> u64 {
     for brace in line.chars() {
       if OPENING_BRACES.contains(&brace) {
         stack.push(brace);
+      } else if braces_map.get(&brace) == stack.last() {
+        stack.pop();
       } else {
-        if braces_map.get(&brace) == stack.last() {
-          stack.pop();
-        } else {
-          is_corrupted = true;
-          break;
-        }
+        is_corrupted = true;
+        break;
       }
     }
 
     if !is_corrupted {
       let mut score: u64 = 0;
       for brace in stack.iter().rev() {
-        let enclosing_brace = rev_braces_map[&brace];
+        let enclosing_brace = rev_braces_map[brace];
         let points = match enclosing_brace {
           ')' => 1,
           ']' => 2,
@@ -78,18 +76,11 @@ fn part_2(input: &Vec<String>) -> u64 {
     }
   }
 
-  scores.sort();
+  scores.sort_unstable();
   let mid = scores.len() / 2;
   scores[mid]
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

@@ -1,18 +1,12 @@
-use aoc2021::get_input;
+use aoc2021::{get_input, run};
 use itertools::Itertools;
 use petgraph::{graph::NodeIndex, visit::Dfs, Graph};
-use std::{
-  collections::{HashMap, HashSet},
-  io::BufRead,
-  time::Instant,
-};
+use std::collections::{HashMap, HashSet};
 
 fn read_input() -> Vec<Vec<u32>> {
   get_input(9)
-    .lines()
     .map(|line| {
       line
-        .expect("could not read line")
         .chars()
         .map(|height| height.to_digit(10).expect("Could not parse digit"))
         .collect()
@@ -20,6 +14,7 @@ fn read_input() -> Vec<Vec<u32>> {
     .collect()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<Vec<u32>>) -> u32 {
   let mut risk_levels = 0;
 
@@ -44,6 +39,7 @@ fn part_1(input: &Vec<Vec<u32>>) -> u32 {
   risk_levels
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<Vec<u32>>) -> u32 {
   let lines = input.len();
   let cols = input[0].len();
@@ -101,16 +97,9 @@ fn part_2(input: &Vec<Vec<u32>>) -> u32 {
     basins.push(node_count);
   }
 
-  basins.iter().sorted().rev().take(3).product()
+  basins.iter().sorted_unstable().rev().take(3).product()
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

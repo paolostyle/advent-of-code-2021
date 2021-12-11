@@ -1,9 +1,5 @@
-use aoc2021::get_input;
-use std::{
-  cmp::{max, min},
-  io::BufRead,
-  time::Instant,
-};
+use aoc2021::{get_input, run};
+use std::cmp::{max, min};
 
 const MAP_SIZE: usize = 1000;
 type Map = [[u16; MAP_SIZE]; MAP_SIZE];
@@ -75,13 +71,11 @@ impl Line {
 
 fn read_input() -> Vec<Line> {
   get_input(5)
-    .lines()
     .map(|line| {
       let points: Vec<Point> = line
-        .expect("Couldn't read line")
         .split(" -> ")
         .map(|point| {
-          let coords: Vec<&str> = point.split(",").collect();
+          let coords: Vec<&str> = point.split(',').collect();
           Point::new(coords[0], coords[1])
         })
         .collect();
@@ -91,6 +85,7 @@ fn read_input() -> Vec<Line> {
     .collect()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<Line>) -> usize {
   let straight_lines: Vec<&Line> = input.iter().filter(|line| line.is_straight()).collect();
   let mut map: Map = [[0; MAP_SIZE]; MAP_SIZE];
@@ -102,6 +97,7 @@ fn part_1(input: &Vec<Line>) -> usize {
   map.iter().flatten().filter(|val| **val > 1).count()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<Line>) -> usize {
   let mut map: Map = [[0; MAP_SIZE]; MAP_SIZE];
 
@@ -113,12 +109,5 @@ fn part_2(input: &Vec<Line>) -> usize {
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

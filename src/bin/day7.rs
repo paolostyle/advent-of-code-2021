@@ -1,19 +1,17 @@
-use aoc2021::get_input;
-use std::{io::BufRead, time::Instant};
+use aoc2021::{get_input, run};
 
 fn read_input() -> Vec<i32> {
   get_input(7)
-    .lines()
     .flat_map(|line| {
       line
-        .expect("Couldn't read line")
-        .split(",")
-        .map(|v| v.parse::<i32>().expect("Couldn't parse number"))
+        .split(',')
+        .flat_map(|v| v.parse())
         .collect::<Vec<_>>()
     })
     .collect()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<i32>) -> i32 {
   let max_val = *input.iter().max().unwrap();
   let mut min_result = i32::MAX;
@@ -33,7 +31,8 @@ fn part_1(input: &Vec<i32>) -> i32 {
   min_result
 }
 
-fn part_2(input: &Vec<i32>) -> f64 {
+#[allow(clippy::ptr_arg)]
+fn part_2(input: &Vec<i32>) -> u64 {
   let max_val = *input.iter().max().unwrap();
   let mut min_result = f64::INFINITY;
 
@@ -49,16 +48,9 @@ fn part_2(input: &Vec<i32>) -> f64 {
     }
   }
 
-  min_result
+  min_result as u64
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

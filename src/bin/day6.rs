@@ -1,20 +1,18 @@
-use aoc2021::get_input;
-use std::{collections::HashMap, io::BufRead, time::Instant};
+use aoc2021::{get_input, run};
+use std::collections::HashMap;
 
 fn read_input() -> Vec<u8> {
   get_input(6)
-    .lines()
     .flat_map(|line| {
       line
-        .expect("Couldn't read line")
-        .split(",")
+        .split(',')
         .map(|v| v.parse::<u8>().expect("Couldn't parse number"))
         .collect::<Vec<_>>()
     })
     .collect()
 }
 
-fn calc(input: &Vec<u8>, iterations: u16) -> u64 {
+fn calc(input: &[u8], iterations: u16) -> u64 {
   let mut fishes_age: HashMap<u8, u64> = HashMap::new();
 
   for age in 0..9 {
@@ -43,21 +41,16 @@ fn calc(input: &Vec<u8>, iterations: u16) -> u64 {
   fishes_age.values().sum()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<u8>) -> u64 {
   calc(input, 80)
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<u8>) -> u64 {
   calc(input, 256)
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

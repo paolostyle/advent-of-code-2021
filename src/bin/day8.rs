@@ -1,13 +1,11 @@
-use aoc2021::get_input;
+use aoc2021::{get_input, run};
 use itertools::Itertools;
-use std::{collections::HashMap, io::BufRead, time::Instant};
+use std::collections::HashMap;
 
 fn read_input() -> Vec<(Vec<String>, Vec<String>)> {
   get_input(8)
-    .lines()
     .map(|line| {
       let (patterns, digits): (Vec<String>, Vec<String>) = line
-        .expect("Couldn't read line")
         .split(" | ")
         .into_iter()
         .map(|part| {
@@ -31,13 +29,13 @@ fn digit_diff(a: &str, b: &str) -> Vec<char> {
     .collect::<Vec<char>>()
 }
 
-fn common_segments(a: &str, b: &Vec<char>) -> Vec<char> {
+fn common_segments(a: &str, b: &[char]) -> Vec<char> {
   a.chars()
     .filter(|item| b.contains(item))
     .collect::<Vec<char>>()
 }
 
-fn get_number(patterns: &Vec<String>, numbers: &Vec<String>) -> u32 {
+fn get_number(patterns: &[String], numbers: &[String]) -> u32 {
   let mut segments = ['-'; 7];
   let mut digits = [""; 10];
 
@@ -137,6 +135,7 @@ fn get_number(patterns: &Vec<String>, numbers: &Vec<String>) -> u32 {
     .expect("Couldn't parse number")
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<(Vec<String>, Vec<String>)>) -> usize {
   input
     .iter()
@@ -150,6 +149,7 @@ fn part_1(input: &Vec<(Vec<String>, Vec<String>)>) -> usize {
     .sum()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<(Vec<String>, Vec<String>)>) -> u32 {
   input
     .iter()
@@ -158,12 +158,5 @@ fn part_2(input: &Vec<(Vec<String>, Vec<String>)>) -> u32 {
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

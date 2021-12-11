@@ -1,14 +1,8 @@
-use aoc2021::get_input;
-use std::{cmp::Ordering, io::BufRead, time::Instant};
+use aoc2021::{get_input, run};
+use std::{cmp::Ordering};
 
-type Column = Vec<char>;
-type Matrix = Vec<Column>;
-
-fn read_input() -> Matrix {
-  get_input(3)
-    .lines()
-    .map(|line| line.expect("could not read line").chars().collect())
-    .collect()
+fn read_input() -> Vec<Vec<char>> {
+  get_input(3).map(|line| line.chars().collect()).collect()
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -22,7 +16,7 @@ impl BitCounter {
     BitCounter { zeroes: 0, ones: 0 }
   }
 
-  fn count(&mut self, column: &Column) {
+  fn count(&mut self, column: &[char]) {
     for bit in column {
       match bit {
         '0' => self.zeroes += 1,
@@ -61,11 +55,11 @@ impl BitCounter {
   }
 }
 
-fn get_column(input: &Matrix, column_number: usize) -> Column {
+fn get_column(input: &[Vec<char>], column_number: usize) -> Vec<char> {
   input.iter().map(|num| num[column_number]).collect()
 }
 
-fn matrix_to_binary(matrix: &Column) -> String {
+fn column_to_binary(matrix: &[char]) -> String {
   matrix.iter().collect::<String>()
 }
 
@@ -73,13 +67,14 @@ fn binary_to_decimal(binary: String) -> u32 {
   u32::from_str_radix(binary.as_str(), 2).unwrap()
 }
 
-fn part_1(input: &Matrix) -> u32 {
+#[allow(clippy::ptr_arg)]
+fn part_1(input: &Vec<Vec<char>>) -> u32 {
   let bits = input[0].len();
   let mut counters: Vec<BitCounter> = vec![BitCounter::new(); bits];
 
-  for column_number in 0..bits {
+  for (column_number, counter) in counters.iter_mut().enumerate() {
     let column = get_column(input, column_number);
-    counters[column_number].count(&column);
+    counter.count(&column);
   }
 
   let mut gamma = String::new();
@@ -93,9 +88,10 @@ fn part_1(input: &Matrix) -> u32 {
   binary_to_decimal(gamma) * binary_to_decimal(epsilon)
 }
 
-fn part_2(input: &Matrix) -> u32 {
-  let mut oxygen_candidates = input.clone();
-  let mut scrubber_candidates = input.clone();
+#[allow(clippy::ptr_arg)]
+fn part_2(input: &Vec<Vec<char>>) -> u32 {
+  let mut oxygen_candidates = input.to_owned();
+  let mut scrubber_candidates = input.to_owned();
   let mut active_bit = 0;
 
   while oxygen_candidates.len() != 1 {
@@ -122,19 +118,12 @@ fn part_2(input: &Matrix) -> u32 {
     active_bit += 1;
   }
 
-  let oxygen_value = binary_to_decimal(matrix_to_binary(&oxygen_candidates[0]));
-  let scrubber_value = binary_to_decimal(matrix_to_binary(&scrubber_candidates[0]));
+  let oxygen_value = binary_to_decimal(column_to_binary(&oxygen_candidates[0]));
+  let scrubber_value = binary_to_decimal(column_to_binary(&scrubber_candidates[0]));
 
   oxygen_value * scrubber_value
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

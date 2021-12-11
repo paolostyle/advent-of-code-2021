@@ -1,5 +1,4 @@
-use aoc2021::get_input;
-use std::{io::BufRead, time::Instant};
+use aoc2021::{get_input, run};
 
 struct Instruction {
   direction: String,
@@ -8,15 +7,13 @@ struct Instruction {
 
 fn read_input() -> Vec<Instruction> {
   get_input(2)
-    .lines()
     .map(|line| {
-      let read_line = line.expect("could not read line");
-      let mut iter = read_line.split_whitespace();
+      let mut iter = line.split_whitespace();
       let direction = String::from(iter.next().unwrap());
       let units = iter
         .next()
         .unwrap()
-        .parse::<u32>()
+        .parse()
         .expect("Could not parse units");
 
       Instruction { direction, units }
@@ -24,6 +21,7 @@ fn read_input() -> Vec<Instruction> {
     .collect()
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_1(input: &Vec<Instruction>) -> u32 {
   let mut horizontal: u32 = 0;
   let mut depth: u32 = 0;
@@ -40,6 +38,7 @@ fn part_1(input: &Vec<Instruction>) -> u32 {
   horizontal * depth
 }
 
+#[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<Instruction>) -> u32 {
   let mut horizontal: u32 = 0;
   let mut depth: u32 = 0;
@@ -61,12 +60,5 @@ fn part_2(input: &Vec<Instruction>) -> u32 {
 }
 
 fn main() {
-  let now = Instant::now();
-
-  let input = read_input();
-  println!("Part 1: {}", part_1(&input));
-  println!("Part 2: {}", part_2(&input));
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }

@@ -1,5 +1,4 @@
-use aoc2021::get_input;
-use std::{io::BufRead, time::Instant};
+use aoc2021::{get_input, run};
 
 const BOARD_SIZE: usize = 5;
 
@@ -58,12 +57,11 @@ impl BingoBoard {
 }
 
 fn read_input() -> (Vec<u8>, Vec<BingoBoard>) {
-  let mut lines = get_input(4).lines();
+  let mut lines = get_input(4);
   let draws = lines
     .next()
-    .expect("Couldn't read draws")
     .unwrap()
-    .split(",")
+    .split(',')
     .map(|draw| draw.parse::<u8>().expect("Couldn't parse draw"))
     .collect();
 
@@ -71,8 +69,7 @@ fn read_input() -> (Vec<u8>, Vec<BingoBoard>) {
   let mut board: Option<BingoBoard> = None;
 
   for line in lines {
-    let read_line = line.expect("Couldn't read line");
-    if read_line.is_empty() {
+    if line.is_empty() {
       match &board {
         None => board = Some(BingoBoard::new()),
         Some(b) => {
@@ -81,7 +78,7 @@ fn read_input() -> (Vec<u8>, Vec<BingoBoard>) {
         }
       }
     } else {
-      let number_line = read_line
+      let number_line = line
         .split_whitespace()
         .map(|num| num.parse::<u8>().expect("Couldn't parse number"))
         .collect();
@@ -101,8 +98,8 @@ fn read_input() -> (Vec<u8>, Vec<BingoBoard>) {
   (draws, boards)
 }
 
-fn part_1() -> u32 {
-  let (draws, mut boards) = read_input();
+fn part_1((draws, boards): &(Vec<u8>, Vec<BingoBoard>)) -> u32 {
+  let mut boards = boards.to_owned();
   let mut winning_board: usize = 0;
   let mut draws_iter = draws.iter();
   let mut draw: &u8 = &0;
@@ -122,14 +119,14 @@ fn part_1() -> u32 {
   boards[winning_board].get_sum() * ((*draw) as u32)
 }
 
-fn part_2() -> u32 {
-  let (draws, mut boards) = read_input();
+fn part_2((draws, boards): &(Vec<u8>, Vec<BingoBoard>)) -> u32 {
+  let mut boards = boards.to_owned();
   let mut draws_iter = draws.iter();
   let mut draw: &u8 = &0;
   let mut last_board: Option<BingoBoard> = None;
 
   // this is awful ngl
-  while boards.len() > 0 {
+  while !boards.is_empty() {
     draw = draws_iter.next().unwrap();
     let mut boards_to_keep = vec![true; boards.len()];
 
@@ -158,11 +155,5 @@ fn part_2() -> u32 {
 }
 
 fn main() {
-  let now = Instant::now();
-
-  println!("Part 1: {}", part_1());
-  println!("Part 2: {}", part_2());
-
-  let elapsed = now.elapsed();
-  println!("Elapsed: {:.2?}", elapsed);
+  run(read_input, part_1, part_2)
 }
