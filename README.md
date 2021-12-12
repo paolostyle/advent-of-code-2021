@@ -4,7 +4,8 @@ My solutions to AoC 2021, this time in Rust, hopefully I won't give up.
 
 I don't know Rust at all though, so that might be tough.
 
-Since it's going pretty well I'll try to have decently fast solutions, below 5ms of execution on release build on my PC.
+~~Since it's going pretty well I'll try to have decently fast solutions, below 5ms of execution on release build on my PC.~~
+that did not work on day 12
 
 ## Create new puzzle
 
