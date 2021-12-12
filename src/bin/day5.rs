@@ -1,5 +1,4 @@
-use aoc2021::{get_input, run};
-use std::cmp::{max, min};
+use std::cmp;
 
 const MAP_SIZE: usize = 1000;
 type Map = [[u16; MAP_SIZE]; MAP_SIZE];
@@ -44,13 +43,13 @@ impl Line {
 
   fn draw(&self, map: &mut Map) {
     if self.is_horizontal() {
-      let range = min(self.a.y, self.b.y)..max(self.a.y, self.b.y) + 1;
+      let range = cmp::min(self.a.y, self.b.y)..cmp::max(self.a.y, self.b.y) + 1;
 
       for i in range {
         map[i as usize][self.a.x as usize] += 1;
       }
     } else if self.is_vertical() {
-      let range = min(self.a.x, self.b.x)..max(self.a.x, self.b.x) + 1;
+      let range = cmp::min(self.a.x, self.b.x)..cmp::max(self.a.x, self.b.x) + 1;
 
       for i in range {
         map[self.a.y as usize][i as usize] += 1;
@@ -70,7 +69,7 @@ impl Line {
 }
 
 fn read_input() -> Vec<Line> {
-  get_input(5)
+  aoc2021::get_input(5)
     .map(|line| {
       let points: Vec<Point> = line
         .split(" -> ")
@@ -109,5 +108,5 @@ fn part_2(input: &Vec<Line>) -> usize {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

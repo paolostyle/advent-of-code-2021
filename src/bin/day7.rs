@@ -1,13 +1,6 @@
-use aoc2021::{get_input, run};
-
 fn read_input() -> Vec<i32> {
-  get_input(7)
-    .flat_map(|line| {
-      line
-        .split(',')
-        .flat_map(|v| v.parse())
-        .collect::<Vec<_>>()
-    })
+  aoc2021::get_input(7)
+    .flat_map(|line| line.split(',').flat_map(|v| v.parse()).collect::<Vec<_>>())
     .collect()
 }
 
@@ -52,5 +45,5 @@ fn part_2(input: &Vec<i32>) -> u64 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

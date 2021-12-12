@@ -1,4 +1,3 @@
-use aoc2021::{get_input, run};
 use std::collections::HashMap;
 
 const OPENING_BRACES: [char; 4] = ['(', '[', '{', '<'];
@@ -6,7 +5,7 @@ const BRACES_PAIRS: [(char, char); 4] = [(')', '('), (']', '['), ('}', '{'), ('>
 const REV_BRACES_PAIRS: [(char, char); 4] = [('(', ')'), ('[', ']'), ('{', '}'), ('<', '>')];
 
 fn read_input() -> Vec<String> {
-  get_input(10).collect()
+  aoc2021::get_input(10).collect()
 }
 
 #[allow(clippy::ptr_arg)]
@@ -82,5 +81,5 @@ fn part_2(input: &Vec<String>) -> u64 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

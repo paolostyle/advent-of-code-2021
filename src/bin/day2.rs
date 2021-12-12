@@ -1,20 +1,14 @@
-use aoc2021::{get_input, run};
-
 struct Instruction {
   direction: String,
   units: u32,
 }
 
 fn read_input() -> Vec<Instruction> {
-  get_input(2)
+  aoc2021::get_input(2)
     .map(|line| {
       let mut iter = line.split_whitespace();
       let direction = String::from(iter.next().unwrap());
-      let units = iter
-        .next()
-        .unwrap()
-        .parse()
-        .expect("Could not parse units");
+      let units = iter.next().unwrap().parse().expect("Could not parse units");
 
       Instruction { direction, units }
     })
@@ -60,5 +54,5 @@ fn part_2(input: &Vec<Instruction>) -> u32 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

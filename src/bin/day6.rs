@@ -1,8 +1,7 @@
-use aoc2021::{get_input, run};
 use std::collections::HashMap;
 
 fn read_input() -> Vec<u8> {
-  get_input(6)
+  aoc2021::get_input(6)
     .flat_map(|line| {
       line
         .split(',')
@@ -52,5 +51,5 @@ fn part_2(input: &Vec<u8>) -> u64 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

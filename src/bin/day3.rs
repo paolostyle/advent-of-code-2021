@@ -1,8 +1,9 @@
-use aoc2021::{get_input, run};
-use std::{cmp::Ordering};
+use std::cmp::Ordering;
 
 fn read_input() -> Vec<Vec<char>> {
-  get_input(3).map(|line| line.chars().collect()).collect()
+  aoc2021::get_input(3)
+    .map(|line| line.chars().collect())
+    .collect()
 }
 
 #[derive(Copy, Clone, Debug)]
@@ -125,5 +126,5 @@ fn part_2(input: &Vec<Vec<char>>) -> u32 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

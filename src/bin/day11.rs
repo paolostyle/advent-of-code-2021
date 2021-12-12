@@ -1,7 +1,5 @@
 use std::fmt;
 
-use aoc2021::{get_input, run};
-
 const MAP_SIZE: usize = 10;
 
 struct OctopusGrid {
@@ -99,7 +97,7 @@ impl fmt::Display for OctopusGrid {
 }
 
 fn read_input() -> Vec<Vec<u32>> {
-  get_input(11)
+  aoc2021::get_input(11)
     .map(|row| row.chars().flat_map(|item| item.to_digit(10)).collect())
     .collect()
 }
@@ -131,5 +129,5 @@ fn part_2(input: &Vec<Vec<u32>>) -> u32 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

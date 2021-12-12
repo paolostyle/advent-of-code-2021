@@ -1,5 +1,3 @@
-use aoc2021::{get_input, run};
-
 const BOARD_SIZE: usize = 5;
 
 #[derive(Clone, Debug)]
@@ -57,7 +55,7 @@ impl BingoBoard {
 }
 
 fn read_input() -> (Vec<u8>, Vec<BingoBoard>) {
-  let mut lines = get_input(4);
+  let mut lines = aoc2021::get_input(4);
   let draws = lines
     .next()
     .unwrap()
@@ -155,5 +153,5 @@ fn part_2((draws, boards): &(Vec<u8>, Vec<BingoBoard>)) -> u32 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

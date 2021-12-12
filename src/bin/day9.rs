@@ -1,10 +1,9 @@
-use aoc2021::{get_input, run};
 use itertools::Itertools;
 use petgraph::{graph::NodeIndex, visit::Dfs, Graph};
 use std::collections::{HashMap, HashSet};
 
 fn read_input() -> Vec<Vec<u32>> {
-  get_input(9)
+  aoc2021::get_input(9)
     .map(|line| {
       line
         .chars()
@@ -101,5 +100,5 @@ fn part_2(input: &Vec<Vec<u32>>) -> u32 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }

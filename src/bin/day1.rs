@@ -1,7 +1,7 @@
-use aoc2021::{get_input, run};
-
 fn read_input() -> Vec<u16> {
-  get_input(1).flat_map(|line| line.parse()).collect()
+  aoc2021::get_input(1)
+    .flat_map(|line| line.parse())
+    .collect()
 }
 
 #[allow(clippy::ptr_arg)]
@@ -38,5 +38,5 @@ fn part_2(input: &Vec<u16>) -> u16 {
 }
 
 fn main() {
-  run(read_input, part_1, part_2)
+  aoc2021::run(read_input, part_1, part_2)
 }
