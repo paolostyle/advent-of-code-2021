@@ -84,7 +84,7 @@ fn part_1(input: &Vec<Setting>) -> usize {
       }
     }
   }
-  
+
   cubes.len()
 }
 
