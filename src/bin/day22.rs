@@ -1,6 +1,14 @@
-use std::collections::HashSet;
+#![allow(dead_code)]
+use std::{cmp::Ordering, collections::HashSet, ops::Index};
 
+use itertools::Itertools;
 use regex::Regex;
+
+enum Dimension {
+  X,
+  Y,
+  Z,
+}
 
 #[derive(Clone, Copy, Debug)]
 struct Setting {
@@ -43,11 +51,23 @@ impl Setting {
   }
 }
 
+impl Index<&Dimension> for Setting {
+  type Output = [i64; 2];
+
+  fn index(&self, dim: &Dimension) -> &Self::Output {
+    match dim {
+      Dimension::X => &self.x,
+      Dimension::Y => &self.y,
+      Dimension::Z => &self.z,
+    }
+  }
+}
+
 fn read_input() -> Vec<Setting> {
   let re =
     Regex::new(r"(on|off) x=(-?\d+)\.\.(-?\d+),y=(-?\d+)\.\.(-?\d+),z=(-?\d+)\.\.(-?\d+)").unwrap();
 
-  aoc2021::get_test_input(22)
+  aoc2021::get_input(22)
     .map(|line| {
       let mut on = true;
       let mut settings = Vec::with_capacity(6);
@@ -64,6 +84,89 @@ fn read_input() -> Vec<Setting> {
       Setting::new(on, settings)
     })
     .collect()
+}
+
+fn get_lists(input: &[Setting], dim: &Dimension) -> Vec<[i64; 2]> {
+  let mut lists = vec![[0, 0]];
+
+  for setting in input {
+    let [lower, upper] = setting[dim];
+    let mut maybe_new = false;
+    let mut def_new = vec![];
+
+    for list in lists.iter_mut() {
+      let is_disjoint =
+        (lower < list[0] && upper < list[0]) || (lower > list[1] && upper > list[1]);
+
+      if setting.on {
+        if is_disjoint {
+          maybe_new = true;
+        } else {
+          if lower < list[0] {
+            list[0] = lower;
+          }
+          if upper > list[1] {
+            list[1] = upper;
+          }
+
+          maybe_new = false;
+        }
+      } else if !is_disjoint {
+        if lower > list[0] && upper < list[1] {
+          def_new.push([upper, list[1]]);
+          list[1] = lower;
+        } else if lower <= list[0] && upper < list[1] {
+          list[0] = upper;
+        } else if lower <= list[0] && upper >= list[1] {
+          list[0] = 0;
+          list[1] = 0;
+        } else if lower > list[0] && upper >= list[1] {
+          list[1] = lower;
+        }
+      }
+    }
+
+    if maybe_new {
+      lists.push([lower, upper]);
+    }
+
+    lists.append(&mut def_new);
+    lists.retain(|list| list[0] != 0 && list[1] != 0);
+
+    let mut to_remove = vec![];
+    for i in 0..lists.len() {
+      for j in i + 1..lists.len() {
+        if i != j {
+          if lists[i][0] == lists[j][0] {
+            match lists[i][1].cmp(&lists[j][1]) {
+              Ordering::Equal => to_remove.push(i),
+              Ordering::Greater => to_remove.push(j),
+              Ordering::Less => to_remove.push(i),
+            }
+          }
+
+          if lists[i][1] == lists[j][1] {
+            match lists[i][0].cmp(&lists[j][0]) {
+              Ordering::Equal => to_remove.push(i),
+              Ordering::Greater => to_remove.push(i),
+              Ordering::Less => to_remove.push(j),
+            }
+          }
+        }
+      }
+    }
+
+    if !to_remove.is_empty() {
+      lists = lists
+        .into_iter()
+        .enumerate()
+        .filter(|(idx, _)| !to_remove.contains(idx))
+        .map(|(_, val)| val)
+        .collect();
+    }
+  }
+
+  lists
 }
 
 #[allow(clippy::ptr_arg)]
@@ -90,7 +193,9 @@ fn part_1(input: &Vec<Setting>) -> usize {
 
 #[allow(clippy::ptr_arg)]
 fn part_2(input: &Vec<Setting>) -> usize {
-  0
+  println!("{:?}", get_lists(&input[0..20], &Dimension::Z));
+
+  10
 }
 
 fn main() {
