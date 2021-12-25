@@ -1,8 +1,4 @@
-use std::{
-  collections::{HashMap, VecDeque},
-  time::Instant,
-  vec,
-};
+use std::collections::{HashMap, VecDeque};
 
 fn read_input() -> Vec<String> {
   aoc2021::get_input(24).collect()

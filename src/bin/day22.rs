@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 use std::{cmp::Ordering, collections::HashSet, ops::Index};
 
-use itertools::Itertools;
 use regex::Regex;
 
 enum Dimension {
@@ -195,7 +194,7 @@ fn part_1(input: &Vec<Setting>) -> usize {
 fn part_2(input: &Vec<Setting>) -> usize {
   println!("{:?}", get_lists(&input[0..20], &Dimension::Z));
 
-  10
+  0
 }
 
 fn main() {
